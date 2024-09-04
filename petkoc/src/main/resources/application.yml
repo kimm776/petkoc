@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: petkoc
+
+  config:
+    location: src/main/resources
+    name: application.yml
+
+  datasource:
+    url: ENC(1C4UC3lKHrTKxVHYwUFAFVizRtClSqijCfocrkTrjBADyWIBFDSc+gMZladU/+Ekbhy8Z5RmALZIn5u4O9isqi+jzCz4UkT1e7gj8wPu/9F0zzP1BkaErQ==)
+    username: ENC(mMAuUmuApYJDCqmDsphoYLEQXDn/o7lSY3dqJsrxytPQYc/UNBOCKA==)s
+    password: ENC(8ZnY5WHjA36qwOEQRFdnEXUdbBT14iLZ)
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+      allow-pool-suspension: true
+      max-lifetime: 30000
+      connection-timeout: 3000
+
+
+  security:
+    oauth2:
+      client:
+        registration:
+          naver:
+            client-name: NAVER
+            client-id: ENC(1aEkksbBqcAZbSxUIS4z8ZYieLGNBb/ViN2+P6VhaHE=)
+            client-secret: ENC(dt7D9AATXy8AlM/Sg5uRS6thsNlTmXBK)
+            authorization-grant-type: authorization-code
+            redirect-uri: http://localhost:8080/oauth2/code/naver
+            scope:
+              - name
+              - email
+              - nickname
+        provider:
+          naver:
+            authorization-uri: https://nid.naver.com/oauth2.0/authorize
+            token-uri: https://nid.naver.com/oauth2.0/token
+            user-info-uri: https://nid.naver.com/v1/nid/me
+            user-name-attribute: response
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    password: ${JASYPT_PASSWORD}
+
+logging:
+  level:
+    org:
+      jasypt: debug
