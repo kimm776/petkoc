@@ -7,15 +7,15 @@ spring:
     name: application.yml
 
   datasource:
-    url: ENC(1C4UC3lKHrTKxVHYwUFAFVizRtClSqijCfocrkTrjBADyWIBFDSc+gMZladU/+Ekbhy8Z5RmALZIn5u4O9isqi+jzCz4UkT1e7gj8wPu/9F0zzP1BkaErQ==)
-    username: ENC(mMAuUmuApYJDCqmDsphoYLEQXDn/o7lSY3dqJsrxytPQYc/UNBOCKA==)s
+    url: jdbc:postgresql://aws-0-ap-northeast-2.pooler.supabase.com:6543/postgres?prepareThreshold=0
+    username: ENC(mMAuUmuApYJDCqmDsphoYLEQXDn/o7lSY3dqJsrxytPQYc/UNBOCKA==)
     password: ENC(8ZnY5WHjA36qwOEQRFdnEXUdbBT14iLZ)
     driver-class-name: org.postgresql.Driver
     hikari:
-      maximum-pool-size: 5
+      maximum-pool-size: 10
       allow-pool-suspension: true
       max-lifetime: 30000
-      connection-timeout: 3000
+      connection-timeout: 100000
 
 
   security:
@@ -41,8 +41,12 @@ spring:
   jpa:
     properties:
       hibernate:
+        boot:
+          allow_jdbc_metadata_access: false
         dialect: org.hibernate.dialect.PostgreSQLDialect
         show_sql: true
+        ddl_auto: update
+    generate-ddl: true
 
 jasypt:
   encryptor:
