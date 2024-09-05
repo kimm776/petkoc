@@ -3,6 +3,8 @@ package com.dog.petkoc.controller;
 import com.dog.petkoc.entity.Member;
 import com.dog.petkoc.repository.MemberRepository;
 import com.dog.petkoc.service.MemberService;
+import com.dog.petkoc.service.NaverOauth2Service;
+import com.dog.petkoc.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -17,15 +19,8 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
+    private final NaverOauth2Service naverOauth2Service;
 
-    @Value("${spring.security.oauth2.client.provider.naver.authorization-uri}")
-    private String naver_authorization_uri;
-
-    @Value("${spring.security.oauth2.client.registration.naver.client-id}")
-    private String naver_client_id;
-
-    @Value("${spring.security.oauth2.client.registration.naver.redirect-uri}")
-    private String naver_redirect_uri;
 
     /**
      * 회원 등록
@@ -68,9 +63,9 @@ public class MemberController {
 
     @GetMapping("/page/login")
     public String loginPage(Model model) {
-        String naverLoginUrl = String.format("%s?client_id=%s&redirect_uri=%s&response_type=code", naver_authorization_uri, naver_client_id, naver_redirect_uri);
-        model.addAttribute("naverLoginUrl", naverLoginUrl);
+        model.addAttribute("naverLoginUrl", naverOauth2Service.getAuthorizeUri());
         return "member/login";
     }
+
 
 }
