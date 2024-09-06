@@ -13,7 +13,7 @@ public class OauthTokens {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private Long id;
 
     @Column(unique = true, nullable = false)
     private UUID memberId;

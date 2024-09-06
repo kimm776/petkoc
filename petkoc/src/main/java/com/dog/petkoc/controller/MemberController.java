@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/member")
 public class MemberController {
 
     private final MemberService memberService;
@@ -29,7 +28,7 @@ public class MemberController {
      * @param fullName
      * @return
      */
-    @PostMapping("/register")
+    @PostMapping("/member/register")
     @ResponseBody
     public ResponseEntity<String> registerMember (
             @RequestParam(value = "email") String email,
@@ -49,7 +48,7 @@ public class MemberController {
      * 인증 필요 url 테스트
      * @return
      */
-    @GetMapping("/profile")
+    @GetMapping("/member/profile")
     @ResponseBody
     public ResponseEntity<String> getProfile() {
         return ResponseEntity.ok("This is a protected resource.");
@@ -61,9 +60,9 @@ public class MemberController {
         return memberService.findByEmail("test@email.com");
     }
 
-    @GetMapping("/page/login")
+    @GetMapping("/login/loadPage")
     public String loginPage(Model model) {
-        model.addAttribute("naverLoginUrl", naverOauth2Service.getAuthorizeUri());
+//        model.addAttribute("naverLoginUrl", naverOauth2Service.getAuthorizeUri());
         return "member/login";
     }
 
