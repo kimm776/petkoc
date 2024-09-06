@@ -56,4 +56,4 @@ logging:
   level:
     org:
       jasypt: debug
-    com.dog.petkoc.service: DEBUG
+    com.dog.petkoc.*: DEBUG

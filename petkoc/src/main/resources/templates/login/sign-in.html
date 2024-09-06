@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        .form-signin {
+            max-width: 330px;
+            padding: 1rem;
+        }
+
+        .form-signin .form-floating:focus-within {
+            z-index: 2;
+        }
+
+        .form-signin input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+    </style>
+</head>
+<body class="d-flex align-items-center py-4 bg-body-tertiary">
+<main class="form-signin w-100 m-auto">
+    <form method="post" action="/login/email-sign-in">
+        <h1 style="font-family: BagelFatOne-Regular,serif; color: var(--main-color);">petkoc</h1>
+        <h1 class="h3 mb-3 fw-normal">로그인 해주세요</h1>
+
+        <div class="form-floating">
+            <input name="username" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">이메일</label>
+        </div>
+        <div class="form-floating">
+            <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+            <label for="floatingPassword">비밀번호</label>
+        </div>
+
+        <div class="form-check text-start my-3">
+            <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">
+                Remember me
+            </label>
+        </div>
+        <button class="btn btn-primary w-100 py-2" type="submit">로그인</button>
+        <hr>
+        <a th:href="@{/oauth2/authorization/naver}"><img class="w-100 py-2" src="/image/sign-in-naver.png" alt="네이버 로그인"></a>
+        <img class="w-100 py-2" src="/image/kakao_login_large_wide.png" alt="카카오 로그인">
+        <span class="py-2">아직 회원이 아니신가요? <a href="/login/sign-up">회원가입</a></span>
+        <span class="py-2"><a>비밀번호 찾기</a></span>
+    </form>
+</main>
+
+</body>
+</html>

@@ -1,7 +1,8 @@
 package com.dog.petkoc.config;
 
-import com.dog.petkoc.service.CustomOAuth2UserService;
-import com.dog.petkoc.service.MemberService;
+import com.dog.petkoc.security.EmailUserService;
+import com.dog.petkoc.security.ExceptionHandler;
+import com.dog.petkoc.security.OAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -20,45 +22,49 @@ import org.springframework.security.web.SecurityFilterChain;
 @Slf4j
 public class SecurityConfig {
 
-    private final MemberService userDetailsService;
+    private final EmailUserService userDetailsService;
     private final PasswordEncoder passwordEncoder;
-    private final CustomOAuth2UserService customOAuth2UserService;
-
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http.authorizeHttpRequests((auth) -> auth
-//                .requestMatchers("/**","/member/register").permitAll()
-//                .anyRequest().authenticated()
-//        );
-//        http.csrf(csrf -> csrf.disable());
-//        http.httpBasic(Customizer.withDefaults());
-//
-//        return http.build();
-//    }
+    private final OAuth2UserService oAuth2UserService;
+    private final ExceptionHandler exceptionHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/vendor/**").hasRole("VENDOR")
                         .requestMatchers("/customer/**").hasRole("CUSTOMER")
                         .requestMatchers("/member/**").hasRole("MEMBER")
-                        .requestMatchers("/", "/index.html", "/css/**", "/image/**", "/js/**", "/login/**").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/login/loadPage")
-                        .loginProcessingUrl("/login/request")
+                        .loginPage("/login/sign-in")
                         .userInfoEndpoint(userInfo -> userInfo
-                                .userService(customOAuth2UserService)
+                                .userService(oAuth2UserService)
                         )
                         .successHandler((request, response, authentication) -> {
-                            log.debug("OAuth Login Success");
+                            log.debug("소셜 로그인 성공...");
                         })
                         .failureHandler((request, response, e) -> {
                             log.error(e.getMessage());
                         })
+                        .defaultSuccessUrl("/")
+                        .failureUrl("/login/sign-in")
+                )
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login/sign-in")
+                        .loginProcessingUrl("/login/email-sign-in")
+                        .successHandler(((request, response, authentication) -> {
+                            log.debug("이메일 로그인 성공... {}", authentication.getPrincipal().toString());
+                        }))
+                        .failureHandler(((request, response, exception) -> {
+                            log.error(exception.getMessage());
+                        }))
+                        .defaultSuccessUrl("/")
+                        .failureUrl("/login/sign-in")
+                        .permitAll()
+                )
+                .exceptionHandling(exception -> exception
+                        .accessDeniedHandler(exceptionHandler)
                 )
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(Customizer.withDefaults())

@@ -1,4 +1,4 @@
-package com.dog.petkoc.service;
+package com.dog.petkoc.security;
 
 import com.dog.petkoc.entity.Member;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -20,23 +19,23 @@ import java.util.Map;
 public class UserPrincipal implements OAuth2User, UserDetails {
 
     private final Member member;
-    private List<GrantedAuthority> authorities;
-    private Map<String, Object> oauthUserAttributes;
+    private Collection<GrantedAuthority> authorities;
+    private Map<String, Object> userAttributes;
 
     @Override
     public Map<String, Object> getAttributes() {
-        return Collections.unmodifiableMap(oauthUserAttributes);
+        return Collections.unmodifiableMap(userAttributes);
     }
 
     @Override
     @Nullable
     @SuppressWarnings("unchecked")
     public <A> A getAttribute(String name) {
-        return (A) oauthUserAttributes.get(name);
+        return (A) userAttributes.get(name);
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.unmodifiableList(authorities);
+        return authorities;
     }
 
     @Override
@@ -51,26 +50,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
 
     @Override
     public String getName() {
-        return member.getFullName();
+        return member.getName();
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

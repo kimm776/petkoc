@@ -1,0 +1,12 @@
+:root {
+    --main-color: #f78b00;
+    --sub-color-1: #ffcc99;
+    --sub-color-2: #efd765;
+}
+@font-face {
+    font-family: 'BagelFatOne-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_JAMO@1.0/BagelFatOne-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
