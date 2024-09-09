@@ -45,7 +45,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         show_sql: true
         ddl_auto: update
-    generate-ddl: true
+    generate-ddl: false
 
 jasypt:
   encryptor:
