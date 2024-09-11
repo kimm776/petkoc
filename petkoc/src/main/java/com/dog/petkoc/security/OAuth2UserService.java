@@ -28,7 +28,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         Map<String, Object> userInfo = super.loadUser(oAuth2UserRequest).getAttributes();
 
         try {
-            Member member = validateAttributes(userInfo, provider);
+            Member member = extractMember(userInfo, provider);
             findOrCreateMember(member);
             List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_MEMBER"));
             return new UserPrincipal(member, authorities, userInfo);
@@ -38,39 +38,60 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         }
     }
 
-    private Member validateAttributes(Map<String, Object> userInfo, String provider) {
+    private Member extractMember(Map<String, Object> userInfo, String provider) {
         if (provider.equalsIgnoreCase("Naver")) {
-            return validateNaverAttributes(userInfo);
+            return extractNaverMember(userInfo);
         } else if (provider.equalsIgnoreCase("Kakao")) {
-            return validateKakaoAttributes(userInfo);
+            return extractKakaoMember(userInfo);
         } else {
             throw new OAuth2AuthenticationException("Unsupported provider: " + provider);
         }
     }
 
-    private Member validateNaverAttributes(Map<String, Object> userInfo) {
-        userInfo = (Map<String, Object>) userInfo.get("response");
-        if (!userInfo.containsKey("email") || !userInfo.containsKey("name")) {
-            throw new OAuth2AuthenticationException("Naver 응답에 필수 속성이 존재하지 않습니다.");
+    @SuppressWarnings("unchecked")
+    private Member extractNaverMember(Map<String, Object> userInfo) {
+        if (userInfo.get("response") instanceof Map) {
+            Map<String, Object> response = (Map<String, Object>) userInfo.get("response");
+
+            if (!response.containsKey("email") || !response.containsKey("name")) {
+                throw new OAuth2AuthenticationException("Naver 응답에 필수 속성이 존재하지 않습니다.");
+            }
+
+            Member member = new Member();
+            member.setProvider("Naver");
+            member.setEmail((String) response.get("email"));
+            member.setName((String) response.get("name"));
+
+            return member;
+        } else {
+            throw new OAuth2AuthenticationException("Naver 응답 데이터 형식이 잘못되었습니다.");
         }
-        Member member = new Member();
-        member.setProvider("Naver");
-        member.setEmail((String) userInfo.get("email"));
-        member.setName((String) userInfo.get("name"));
-        return member;
     }
 
-    private Member validateKakaoAttributes(Map<String, Object> userInfo) {
-        userInfo = (Map<String, Object>) userInfo.get("kakao_account");
-        if (!userInfo.containsKey("email") || !userInfo.containsKey("profile")) {
-            throw new OAuth2AuthenticationException("Kakao 응답에 필수 속성이 존재하지 않습니다.");
+    @SuppressWarnings("unchecked")
+    private Member extractKakaoMember(Map<String, Object> userInfo) {
+        if (userInfo.get("kakao_account") instanceof Map) {
+            Map<String, Object> kakaoAccount = (Map<String, Object>) userInfo.get("kakao_account");
+
+            if (!kakaoAccount.containsKey("email") || !kakaoAccount.containsKey("profile")) {
+                throw new OAuth2AuthenticationException("Kakao 응답에 필수 속성이 존재하지 않습니다.");
+            }
+
+            Member member = new Member();
+            member.setProvider("Kakao");
+            member.setEmail((String) kakaoAccount.get("email"));
+
+            if (kakaoAccount.get("profile") instanceof Map) {
+                Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
+                member.setName((String) profile.get("nickname"));
+            } else {
+                throw new OAuth2AuthenticationException("Kakao 응답 데이터 형식이 잘못되었습니다.");
+            }
+
+            return member;
+        } else {
+            throw new OAuth2AuthenticationException("Kakao 응답 데이터 형식이 잘못되었습니다.");
         }
-        Member member = new Member();
-        member.setProvider("Kakao");
-        member.setEmail((String) userInfo.get("email"));
-        Map<String, Object> profile = (Map<String, Object>) userInfo.get("profile");
-        member.setName((String) profile.get("nickname"));
-        return member;
     }
 
     private void findOrCreateMember(Member member) {
