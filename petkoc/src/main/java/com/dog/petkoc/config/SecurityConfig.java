@@ -1,9 +1,6 @@
 package com.dog.petkoc.config;
 
-import com.dog.petkoc.security.EmailUserService;
-import com.dog.petkoc.security.ExceptionHandler;
-import com.dog.petkoc.security.OAuth2UserService;
-import com.dog.petkoc.security.UserPrincipal;
+import com.dog.petkoc.security.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +11,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -27,6 +26,8 @@ public class SecurityConfig {
     private final PasswordEncoder passwordEncoder;
     private final OAuth2UserService oAuth2UserService;
     private final ExceptionHandler exceptionHandler;
+    private final LoginSuccessHandler loginSuccessHandler;
+    private final JwtFilter jwtFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -44,11 +45,7 @@ public class SecurityConfig {
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(oAuth2UserService)
                         )
-                        .successHandler((request, response, authentication) -> {
-                            UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-                            log.debug("{} 로그인 성공...", userPrincipal.getProvider());
-                            response.sendRedirect("/member/profile");
-                        })
+                        .successHandler(loginSuccessHandler)
                         .failureHandler((request, response, exception) -> {
                             log.error("소셜 로그인 실패: {}", exception.getMessage());
                             response.sendRedirect("/login/sign-in?error=true");
@@ -57,10 +54,7 @@ public class SecurityConfig {
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login/sign-in")
                         .loginProcessingUrl("/login/email-sign-in")
-                        .successHandler((request, response, authentication) -> {
-                            log.debug("이메일 로그인 성공... {}", authentication.getPrincipal().toString());
-                            response.sendRedirect("/member/profile");
-                        })
+                        .successHandler(loginSuccessHandler)
                         .failureHandler((request, response, exception) -> {
                             log.error("이메일 로그인 실패: {}", exception.getMessage());
                             response.sendRedirect("/login/sign-in?error=true");
@@ -69,6 +63,10 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception
                         .accessDeniedHandler(exceptionHandler)
                 )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
