@@ -22,12 +22,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Slf4j
 public class SecurityConfig {
 
-    private final EmailUserService userDetailsService;
     private final PasswordEncoder passwordEncoder;
-    private final OAuth2UserService oAuth2UserService;
     private final ExceptionHandler exceptionHandler;
     private final LoginSuccessHandler loginSuccessHandler;
     private final JwtFilter jwtFilter;
+    private final CustomUserService customUserService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -35,15 +34,13 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/vendor/**").hasRole("VENDOR")
-                        .requestMatchers("/customer/**").hasRole("CUSTOMER")
                         .requestMatchers("/member/**").hasRole("MEMBER")
                         .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login/sign-in")
                         .userInfoEndpoint(userInfo -> userInfo
-                                .userService(oAuth2UserService)
+                                .userService(customUserService)
                         )
                         .successHandler(loginSuccessHandler)
                         .failureHandler((request, response, exception) -> {
@@ -73,7 +70,7 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder auth = http.getSharedObject(AuthenticationManagerBuilder.class);
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+        auth.userDetailsService(customUserService).passwordEncoder(passwordEncoder);
         return auth.build();
     }
 

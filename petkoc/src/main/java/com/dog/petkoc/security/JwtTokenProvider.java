@@ -1,10 +1,10 @@
 package com.dog.petkoc.security;
 
 import com.dog.petkoc.entity.Member;
+import com.dog.petkoc.service.MemberService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -25,17 +25,14 @@ public class JwtTokenProvider implements InitializingBean {
     private final String secret;
     private final long tokenExpiresInSeconds;
     private SecretKey key;
-    private final EmailUserService emailUserService;
-    private final OAuth2UserService oauth2UserService;
+    private final CustomUserService customUserService;
 
     public JwtTokenProvider(@Value("${spring.jwt.secret}") String secret,
                             @Value("${spring.jwt.token-expires-in-seconds}") Long tokenExpiresInSeconds,
-                            EmailUserService emailUserService,
-                            OAuth2UserService oauth2UserService) {
+                            CustomUserService customUserService) {
         this.secret = secret;
         this.tokenExpiresInSeconds = tokenExpiresInSeconds;
-        this.emailUserService = emailUserService;
-        this.oauth2UserService = oauth2UserService;
+        this.customUserService = customUserService;
     }
 
     @Override
@@ -89,7 +86,7 @@ public class JwtTokenProvider implements InitializingBean {
 
     public Authentication getAuthentication(String token) {
         String email = getClaims(token).get("email").toString();
-        UserPrincipal userPrincipal = (UserPrincipal) emailUserService.loadUserByUsername(email);
+        UserPrincipal userPrincipal = customUserService.extractUser(email);
         return new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());
     }
 }
