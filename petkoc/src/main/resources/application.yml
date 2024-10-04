@@ -65,7 +65,6 @@ spring:
   jwt:
     header: Authorization
     secret: ENC(+OElkuP00E4MdnviN0TurtqpWOzintkCs0waFEDAm9DLnR4cNXhrqLxdFEI4e0bj/oHBFSZMLEYhwl6YlPz42/w9D3uVth2OJZCpPMj2++w=)
-    token-expires-in-seconds: 1800000
 
 jasypt:
   encryptor:

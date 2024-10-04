@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,15 +24,12 @@ import java.util.Map;
 public class JwtTokenProvider implements InitializingBean {
     private static final String AUTHORITIES_KEY = "auth";
     private final String secret;
-    private final long tokenExpiresInSeconds;
     private SecretKey key;
     private final CustomUserService customUserService;
 
     public JwtTokenProvider(@Value("${spring.jwt.secret}") String secret,
-                            @Value("${spring.jwt.token-expires-in-seconds}") Long tokenExpiresInSeconds,
                             CustomUserService customUserService) {
         this.secret = secret;
-        this.tokenExpiresInSeconds = tokenExpiresInSeconds;
         this.customUserService = customUserService;
     }
 
@@ -42,8 +40,11 @@ public class JwtTokenProvider implements InitializingBean {
     }
 
     public String createToken(Member member) {
-        Date date  = new Date();
-        Date expireDate = new Date(date.getTime() + tokenExpiresInSeconds);
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
+        calendar.add(Calendar.DAY_OF_MONTH, 30); // 30일 뒤로 설정
+        Date expireDate = calendar.getTime();  // 만료 시간 계산
+
         Map<String, Object> headerClaims = new HashMap<>();
         headerClaims.put("typ", "JWT");
         headerClaims.put("alg", "HS256");

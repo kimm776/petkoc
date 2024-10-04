@@ -37,4 +37,10 @@ public class LoginController {
         }
     }
 
+    @GetMapping("/test")
+    @ResponseBody
+    public String test() {
+        return "Member Role 접근 가능";
+    }
+
 }

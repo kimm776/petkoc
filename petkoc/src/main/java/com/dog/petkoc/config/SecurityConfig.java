@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/member/**").hasRole("MEMBER")
+                        .requestMatchers("/login/test").hasRole("MEMBER")
                         .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
