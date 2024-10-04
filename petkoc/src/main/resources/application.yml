@@ -53,14 +53,16 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
   jpa:
+    hibernate:
+      ddl_auto: update # entity가 수정되면 수정된 내용만 반영
+    show_sql: true # System.out 으로 출력
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect #Hibernate가 PostgreSQL 데이터베이스에 맞게 SQL을 생성하도록 설정
+        format_sql: true # 로그, 콘솔의 SQL을 예쁘게 출력
         boot:
-          allow_jdbc_metadata_access: false
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        show_sql: true
-        ddl_auto: update
-    generate-ddl: false
+          allow_jdbc_metadata_access: true # true: 동적으로 데이터베이스 구조를 파악할 때 ex. insert/update table (개발환경) / false : 이터베이스 구조는 미리 정의되어 있을때(운영환경)
+    generate-ddl: true # DDL을 자동으로 실행 true: 개발환경, false: 운영환경
 
   jwt:
     header: Authorization
