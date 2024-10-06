@@ -1,7 +1,7 @@
 package com.dog.petkoc.security;
 
-import com.dog.petkoc.entity.Member;
-import com.dog.petkoc.service.MemberService;
+import com.dog.petkoc.member.application.entity.Member;
+import com.dog.petkoc.member.application.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;

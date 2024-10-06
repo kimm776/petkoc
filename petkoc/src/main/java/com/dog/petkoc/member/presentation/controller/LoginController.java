@@ -1,7 +1,7 @@
-package com.dog.petkoc.controller;
+package com.dog.petkoc.member.presentation.controller;
 
-import com.dog.petkoc.entity.Member;
-import com.dog.petkoc.service.MemberService;
+import com.dog.petkoc.member.application.entity.Member;
+import com.dog.petkoc.member.application.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

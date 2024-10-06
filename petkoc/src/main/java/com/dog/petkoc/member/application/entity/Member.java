@@ -1,4 +1,4 @@
-package com.dog.petkoc.entity;
+package com.dog.petkoc.member.application.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
