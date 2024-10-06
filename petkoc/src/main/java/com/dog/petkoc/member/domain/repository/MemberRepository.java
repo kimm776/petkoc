@@ -1,6 +1,6 @@
-package com.dog.petkoc.repository;
+package com.dog.petkoc.member.domain.repository;
 
-import com.dog.petkoc.entity.Member;
+import com.dog.petkoc.member.application.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

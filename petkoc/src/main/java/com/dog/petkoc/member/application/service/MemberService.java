@@ -1,7 +1,7 @@
-package com.dog.petkoc.service;
+package com.dog.petkoc.member.application.service;
 
-import com.dog.petkoc.entity.Member;
-import com.dog.petkoc.repository.MemberRepository;
+import com.dog.petkoc.member.application.entity.Member;
+import com.dog.petkoc.member.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
