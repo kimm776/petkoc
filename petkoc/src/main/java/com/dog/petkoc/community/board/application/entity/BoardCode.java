@@ -22,8 +22,8 @@ public class BoardCode {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "namse", length = 255)
-    private String namse;
+    @Column(name = "name", length = 255)
+    private String name;
 
     @Column(name = "description")
     private String description;
