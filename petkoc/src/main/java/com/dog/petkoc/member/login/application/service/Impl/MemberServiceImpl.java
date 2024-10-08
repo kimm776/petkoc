@@ -17,28 +17,28 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * 이메일 회원 등록
+     * 회원 등록
      * @param member
      */
     @Override
     public void registerMember(Member member) {
-        if (memberRepository.existsByEmail(member.getEmail())) {
+        if (memberRepository.isExistingByEmail(member.getEmail())) {
             log.debug("이미 존재하는 이메일입니다...");
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
         if (member.getPassword() != null){
             member.setPassword(passwordEncoder.encode(member.getPassword()));
         }
-        memberRepository.save(member);
+        memberRepository.saveMember(member);
     }
     @Override
     public Member findByEmail(String email) {
-        return memberRepository.findByEmail(email);
+        return memberRepository.findMemberByEmail(email);
     }
 
     @Override
-    public boolean existingByEmail(String email) {
-        return memberRepository.existsByEmail(email);
+    public boolean existsByEmail(String email) {
+        return memberRepository.isExistingByEmail(email);
     }
 
 }
