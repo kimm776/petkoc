@@ -2,3 +2,5 @@
 /petkoc/out/
 /.idea/
 /petkoc/build/
+# Ignore React build files
+/petkoc/src/main/resources/static/static/
