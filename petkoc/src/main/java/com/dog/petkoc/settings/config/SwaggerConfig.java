@@ -1,4 +1,4 @@
-package com.dog.petkoc.config.config;
+package com.dog.petkoc.settings.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

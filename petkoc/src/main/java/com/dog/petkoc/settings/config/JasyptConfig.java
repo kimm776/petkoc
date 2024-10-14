@@ -1,4 +1,4 @@
-package com.dog.petkoc.config.config;
+package com.dog.petkoc.settings.config;
 
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;

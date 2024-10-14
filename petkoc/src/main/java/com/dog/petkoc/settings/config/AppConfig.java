@@ -1,4 +1,4 @@
-package com.dog.petkoc.config.config;
+package com.dog.petkoc.settings.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

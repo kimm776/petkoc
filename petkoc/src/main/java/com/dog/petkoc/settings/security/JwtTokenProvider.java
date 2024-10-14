@@ -1,4 +1,4 @@
-package com.dog.petkoc.config.security;
+package com.dog.petkoc.settings.security;
 
 import com.dog.petkoc.app.member.login.application.entity.Member;
 import io.jsonwebtoken.Claims;

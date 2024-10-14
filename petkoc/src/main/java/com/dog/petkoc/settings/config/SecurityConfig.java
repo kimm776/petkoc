@@ -1,9 +1,9 @@
-package com.dog.petkoc.config.config;
+package com.dog.petkoc.settings.config;
 
-import com.dog.petkoc.config.security.CustomUserService;
-import com.dog.petkoc.config.security.ExceptionHandler;
-import com.dog.petkoc.config.security.JwtFilter;
-import com.dog.petkoc.config.security.LoginSuccessHandler;
+import com.dog.petkoc.settings.security.CustomUserService;
+import com.dog.petkoc.settings.security.ExceptionHandler;
+import com.dog.petkoc.settings.security.JwtFilter;
+import com.dog.petkoc.settings.security.LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

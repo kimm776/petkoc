@@ -1,4 +1,4 @@
-package com.dog.petkoc.config.security;
+package com.dog.petkoc.settings.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
