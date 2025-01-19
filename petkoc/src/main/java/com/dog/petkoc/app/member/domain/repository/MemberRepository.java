@@ -1,6 +1,6 @@
-package com.dog.petkoc.app.member.login.domain.repository;
+package com.dog.petkoc.app.member.domain.repository;
 
-import com.dog.petkoc.app.member.login.application.entity.Member;
+import com.dog.petkoc.app.member.domain.entity.Member;
 
 
 public interface MemberRepository {

@@ -1,6 +1,6 @@
 package com.dog.petkoc.settings.security;
 
-import com.dog.petkoc.app.member.login.application.entity.Member;
+import com.dog.petkoc.app.member.domain.entity.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

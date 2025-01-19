@@ -1,4 +1,4 @@
-package com.dog.petkoc.app.member.login.application.entity;
+package com.dog.petkoc.app.member.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

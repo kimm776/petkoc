@@ -1,7 +1,7 @@
-package com.dog.petkoc.app.member.login.presentation.controller;
+package com.dog.petkoc.app.member.presentation.login;
 
-import com.dog.petkoc.app.member.login.application.entity.Member;
-import com.dog.petkoc.app.member.login.application.service.MemberService;
+import com.dog.petkoc.app.member.domain.entity.Member;
+import com.dog.petkoc.app.member.application.service.MemberService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

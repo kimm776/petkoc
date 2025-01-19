@@ -1,6 +1,6 @@
 package com.dog.petkoc.settings.security;
 
-import com.dog.petkoc.app.member.login.application.entity.Member;
+import com.dog.petkoc.app.member.domain.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

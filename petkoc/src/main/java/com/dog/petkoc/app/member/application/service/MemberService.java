@@ -1,8 +1,7 @@
-package com.dog.petkoc.app.member.login.application.service.Impl;
+package com.dog.petkoc.app.member.application.service;
 
-import com.dog.petkoc.app.member.login.application.entity.Member;
-import com.dog.petkoc.app.member.login.domain.repository.MemberRepository;
-import com.dog.petkoc.app.member.login.application.service.MemberService;
+import com.dog.petkoc.app.member.domain.entity.Member;
+import com.dog.petkoc.app.member.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService {
+public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
@@ -20,7 +19,6 @@ public class MemberServiceImpl implements MemberService {
      * 회원 등록
      * @param member
      */
-    @Override
     public void registerMember(Member member) {
         if (memberRepository.isExistingByEmail(member.getEmail())) {
             log.debug("이미 존재하는 이메일입니다...");
@@ -31,12 +29,10 @@ public class MemberServiceImpl implements MemberService {
         }
         memberRepository.saveMember(member);
     }
-    @Override
     public Member findByEmail(String email) {
         return memberRepository.findMemberByEmail(email);
     }
 
-    @Override
     public boolean existsByEmail(String email) {
         return memberRepository.isExistingByEmail(email);
     }
