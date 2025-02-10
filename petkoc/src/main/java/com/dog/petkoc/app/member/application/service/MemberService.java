@@ -37,4 +37,15 @@ public class MemberService {
         return memberRepository.isExistingByEmail(email);
     }
 
+    /**
+     * 가입처리 완료 여부 확인
+     */
+    public boolean isRegisterdByEmail(String email) {
+        if (this.existsByEmail(email)) {
+            Member member = memberRepository.findMemberByEmail(email);
+            return member.isRegistered();
+        }
+        return false;
+    }
+
 }

@@ -29,4 +29,7 @@ public class Member {
 
     @Column(nullable = false)
     private String provider;
+
+    @Column
+    private boolean isRegistered;
 }

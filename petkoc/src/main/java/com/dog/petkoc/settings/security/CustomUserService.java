@@ -76,11 +76,14 @@ public class CustomUserService extends DefaultOAuth2UserService implements UserD
 
 
     private void findOrCreateMember(Member member) {
-        if (memberService.existsByEmail(member.getEmail())) {
+        if (memberService.isRegisterdByEmail(member.getEmail())) {
             log.debug("가입되어있음. 로그인처리로 넘어감.");
         } else {
-            // FIXME: 바로 등록하지 않고 회원가입 페이지로 사용자 Email 넘기기
-            memberService.registerMember(member);
+            if (memberService.existsByEmail(member.getEmail())) {
+                log.debug("회원가입 페이지로 이동...");
+            } else {
+                memberService.registerMember(member);
+            }
         }
     }
 

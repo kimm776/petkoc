@@ -49,8 +49,14 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         // 응답 헤더에 쿠키 추가
         response.addHeader(HttpHeaders.SET_COOKIE, jwtCookie.toString());
-        // 테스트 페이지로 전송 TODO: 사용자가 접근 시도했던 페이지로 이동
-        response.sendRedirect(request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/login/test");
+        if (userPrincipal.getMember().isRegistered()) {
+            // 롤 테스트 페이지로 전송 TODO: 메인 페이지로 이동
+            log.debug(request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/login/test");
+            response.sendRedirect(request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/login/test");
+        } else {
+            // 회원가입 페이지로 전송 FIXME: 이메일 회원가입 페이지가 아닌 회원 상세 정보 등록하는 페이지로 이동
+            response.sendRedirect(request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/login/sign-up");
+        }
 
         log.debug("{} 로그인 성공...", userPrincipal.getProvider());
     }
